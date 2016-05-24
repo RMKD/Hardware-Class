@@ -20,6 +20,8 @@ int buttonAState = 0;
 int buttonBState = 0;
 int buttonCState = 0;
 
+int mouseSignal = 0;
+
 const int LED_ON = 0;
 const int LED_OFF = 1;
 
@@ -40,6 +42,8 @@ void setup(){
 
   TrinketMouse.begin();
 }
+
+
   
 void loop(){
   
@@ -49,14 +53,17 @@ void loop(){
   
   if (A == 0){
    //send a mouse click signal here
+   mouseSignal = MOUSEBTN_LEFT_MASK;
   }
   
   if (B == 0){
    //send a mouse click signal here
+   mouseSignal = MOUSEBTN_MIDDLE_MASK;
   }
   
   if (C == 0){
-   //send a mouse click signal here    
+   //send a mouse click signal here
+    mouseSignal = MOUSEBTN_RIGHT_MASK;    
   } 
 
   if (A == 0 || B == 0  || C == 0){
@@ -83,7 +90,8 @@ void loop(){
     //pass
   }
 
-  TrinketMouse.move(processedX, processedY, 0, 0);
+  TrinketMouse.move(processedX, processedY, 0, mouseSignal);
+  mouseSignal = 0;
   delay(5); //mustcheck in every 10ms or less or OS will conclude device is gone
 }
 
